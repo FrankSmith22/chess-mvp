@@ -61,10 +61,9 @@ function getPieceMoves(possibleMoves, curPosition){
         let movePositions = []
         switch(move.direction){
             case Direction.FORWARD:
-                movePositions = [
-                    [curPosition[0] - move.spaces], // possible row movements
-                    Array.from({length: move.spaces}, (_, i) => i + curPosition[1]) // possible col movements
-                ]
+                for(let i=0; i < move.spaces; i++){
+                    movePositions.push([(curPosition[0] - 1) - i, curPosition[1]])
+                }
         }
         if(movePositions.length > 0){
             allMovePositions.push(movePositions)
@@ -78,26 +77,23 @@ function tryMove(board, curPosition, newPosition){
     // curPosition[0] is row
     // curPosition[1] is col
     let piece = board[curPosition[0]][curPosition[1]]
-    console.log(piece)
     let newPositionPiece = board[newPosition[0]][newPosition[1]]
-    console.log(newPositionPiece)
     if (typeof piece === 'string'){
         console.error("selected board space has no piece")
         return
     }
     // Check if newPosition has a piece on it
     let possibleMoves = piece.possibleMoves
-    let enemyPiece = null
     if (typeof newPositionPiece !== 'string'){
         console.log("desired spot has a piece, checking attack possibilities")
         possibleMoves = piece.possibleAttacks
-        enemyPiece = newPositionPiece
     }
 
     let allMovePositions = getPieceMoves(possibleMoves, curPosition)
-    console.log(allMovePositions)
+    console.log("allMovePositions=" + allMovePositions)
     for(let movePositions of allMovePositions){
-        if(movePositions[0].includes(newPosition[0]) && movePositions[1].includes(newPosition[1])){
+        if(movePositions.some(movePosition => newPosition.toString() === movePosition.toString())){
+            // TODO need to account for pieces in the way
             console.log("Piece can move/attack")
             board[newPosition[0]][newPosition[1]] = piece
             board[curPosition[0]][curPosition[1]] = "X"
@@ -109,7 +105,6 @@ function tryMove(board, curPosition, newPosition){
 // Main
 initBoard()
 
-printBoard(board)
 board = tryMove(board, [6,4], [5,4])
 printBoard(board)
 board = tryMove(board, [5,4], [4,4])
@@ -119,4 +114,8 @@ printBoard(board)
 board = tryMove(board, [3,4], [2,4])
 printBoard(board)
 board = tryMove(board, [2,4], [1,4]) // Enemy piece in the way, wont move
+printBoard(board)
+board = tryMove(board, [7,4], [3,4]) // bQueen to behind now moved bPawn
+printBoard(board)
+board = tryMove(board, [6,3], [3,3]) // too many spaces for pawn to move
 printBoard(board)
