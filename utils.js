@@ -8,7 +8,7 @@ export function printBoard(frozenBoard){
                 printStr += col.padEnd(9, " ")
             }
             else{
-                printStr += col.color.description[0] + col.constructor.name.padEnd(8, " ")
+                printStr += col.color[0] + col.constructor.name.padEnd(8, " ")
             }
         }
         printStr += "\n"

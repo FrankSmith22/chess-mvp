@@ -1,17 +1,17 @@
 export const Direction = Object.freeze({
-    FORWARD: Symbol("forward"),
-    BACKWARD: Symbol("backward"),
-    LEFT: Symbol("left"),
-    RIGHT: Symbol("right"),
-    FORWARD_LEFT: Symbol("forward_left"),
-    FORWARD_RIGHT: Symbol("forward_right"),
-    BACKWARD_LEFT: Symbol("backward_left"),
-    BACKWARD_RIGHT: Symbol("backward_right"),
+    FORWARD: "forward",
+    BACKWARD: "backward",
+    LEFT: "left",
+    RIGHT: "right",
+    FORWARD_LEFT: "forward_left",
+    FORWARD_RIGHT: "forward_right",
+    BACKWARD_LEFT: "backward_left",
+    BACKWARD_RIGHT: "backward_right",
 })
 
 export const Color = Object.freeze({
-    WHITE: Symbol("white"),
-    BLACK: Symbol("black")
+    WHITE: "white",
+    BLACK: "black"
 })
 
 export class Piece{

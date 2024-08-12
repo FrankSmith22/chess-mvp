@@ -60,13 +60,20 @@ function getPieceMoves(possibleMoves, curPosition, color){
     let colorIncrement = color === Color.WHITE ? 1 : -1
     for(let move of possibleMoves){
         let movePositions = []
+        let count = 0
         switch(move.direction){
             case Direction.FORWARD:
-                let count = 0
                 do {
                     count += colorIncrement
                     movePositions.push([(curPosition[0] + count), curPosition[1]])
-                } while(Math.abs(count) < move.spaces)
+                } while (Math.abs(count) < move.spaces)
+                break
+            case Direction.BACKWARD:
+                do {
+                    count += colorIncrement
+                    movePositions.push([(curPosition[0] - count), curPosition[1]])
+                } while (Math.abs(count) < move.spaces)
+                break
         }
         if(movePositions.length > 0){
             allMovePositions.push(movePositions)
