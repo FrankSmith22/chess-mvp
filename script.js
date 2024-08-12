@@ -1,5 +1,5 @@
 import { printBoard } from "./utils.js"
-import { Direction, Color, Pawn, Rook, Bishop, King, Queen } from "./pieces.js"
+import { Direction, Color, Pawn, Rook, Knight, Bishop, King, Queen } from "./pieces.js"
 
 let board = [ // 8 rows, 8 cols
     ["X","X","X","X","X","X","X","X",],
@@ -15,12 +15,12 @@ let board = [ // 8 rows, 8 cols
 function initBoard(){
     // White
     board[0][0] = new Rook(Color.WHITE)
-    board[0][1] = new Pawn(Color.WHITE)
+    board[0][1] = new Knight(Color.WHITE)
     board[0][2] = new Bishop(Color.WHITE)
     board[0][3] = new King(Color.WHITE)
     board[0][4] = new Queen(Color.WHITE)
     board[0][5] = new Bishop(Color.WHITE)
-    board[0][6] = new Pawn(Color.WHITE)
+    board[0][6] = new Knight(Color.WHITE)
     board[0][7] = new Rook(Color.WHITE)
     
     board[1][0] = new Pawn(Color.WHITE)
@@ -43,12 +43,12 @@ function initBoard(){
     board[6][7] = new Pawn(Color.BLACK)
 
     board[7][0] = new Rook(Color.BLACK)
-    board[7][1] = new Pawn(Color.BLACK)
+    board[7][1] = new Knight(Color.BLACK)
     board[7][2] = new Bishop(Color.BLACK)
     board[7][3] = new King(Color.BLACK)
     board[7][4] = new Queen(Color.BLACK)
     board[7][5] = new Bishop(Color.BLACK)
-    board[7][6] = new Pawn(Color.BLACK)
+    board[7][6] = new Knight(Color.BLACK)
     board[7][7] = new Rook(Color.BLACK)
 
     printBoard(board)
@@ -108,6 +108,40 @@ function getPieceMoves(possibleMoves, curPosition, color){
                     count += colorIncrement
                     movePositions.push([(curPosition[0] - count), (curPosition[1] - count)])
                 } while (Math.abs(count) < move.spaces)
+                    break
+                    
+            // Knight moves..
+            case Direction.L_FORWARD_LEFT:
+                count += (colorIncrement*2)
+                movePositions.push([(curPosition[0] + count), (curPosition[1] + colorIncrement)])
+                break
+            case Direction.L_FORWARD_RIGHT:
+                count += (colorIncrement*2)
+                movePositions.push([(curPosition[0] + count), (curPosition[1] - colorIncrement)])
+                break
+            case Direction.L_RIGHT_FORWARD:
+                count += (colorIncrement*2)
+                movePositions.push([(curPosition[0] + colorIncrement), (curPosition[1] - count)])
+                break
+            case Direction.L_RIGHT_BACKWARD:
+                count += (colorIncrement*2)
+                movePositions.push([(curPosition[0] - colorIncrement), (curPosition[1] - count)])
+                break
+            case Direction.L_BACKWARD_RIGHT:
+                count += (colorIncrement*2)
+                movePositions.push([(curPosition[0] - count), (curPosition[1] - colorIncrement)])
+                break
+            case Direction.L_BACKWARD_LEFT:
+                count += (colorIncrement*2)
+                movePositions.push([(curPosition[0] - count), (curPosition[1] + colorIncrement)])
+                break
+            case Direction.L_LEFT_BACKWARD:
+                count += (colorIncrement*2)
+                movePositions.push([(curPosition[0] - colorIncrement), (curPosition[1] + count)])
+                break
+            case Direction.L_LEFT_FORWARD:
+                count += (colorIncrement*2)
+                movePositions.push([(curPosition[0] + colorIncrement), (curPosition[1] + count)])
                 break
         }
         if(movePositions.length > 0){
@@ -183,4 +217,23 @@ printBoard(board)
 board = tryMove(board, [5,2], [5,1])
 printBoard(board)
 board = tryMove(board, [5,1], [5,3])
+printBoard(board)
+
+
+// black knight smoke test
+board = tryMove(board, [7,1], [5,0]) // forward left
+printBoard(board)
+board = tryMove(board, [5,0], [3,1]) // forward right
+printBoard(board)
+board = tryMove(board, [3,1], [2,3]) // right forward
+printBoard(board)
+board = tryMove(board, [2,3], [3,5]) // right backward
+printBoard(board)
+board = tryMove(board, [3,5], [5,6]) // backward right
+printBoard(board)
+board = tryMove(board, [5,6], [7,5]) // backward left
+printBoard(board)
+board = tryMove(board, [7,5], [6,3]) // left forward
+printBoard(board)
+board = tryMove(board, [6,3], [7,1]) // left backward
 printBoard(board)
