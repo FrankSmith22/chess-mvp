@@ -11,7 +11,6 @@ let board = [ // 8 rows, 8 cols
     ["X","X","X","X","X","X","X","X",],
     ["X","X","X","X","X","X","X","X",],
 ]
-// printBoard(board)
 
 function initBoard(){
     // White
@@ -74,6 +73,42 @@ function getPieceMoves(possibleMoves, curPosition, color){
                     movePositions.push([(curPosition[0] - count), curPosition[1]])
                 } while (Math.abs(count) < move.spaces)
                 break
+            case Direction.LEFT:
+                do {
+                    count += colorIncrement
+                    movePositions.push([curPosition[0], (curPosition[1] + count)])
+                } while (Math.abs(count) < move.spaces)
+                break
+            case Direction.RIGHT:
+                do {
+                    count += colorIncrement
+                    movePositions.push([curPosition[0], (curPosition[1] - count)])
+                } while (Math.abs(count) < move.spaces)
+                break
+            case Direction.FORWARD_LEFT:
+                do {
+                    count += colorIncrement
+                    movePositions.push([(curPosition[0] + count), (curPosition[1] + count)])
+                } while (Math.abs(count) < move.spaces)
+                break
+            case Direction.FORWARD_RIGHT:
+                do {
+                    count += colorIncrement
+                    movePositions.push([(curPosition[0] + count), (curPosition[1] - count)])
+                } while (Math.abs(count) < move.spaces)
+                break
+            case Direction.BACKWARD_LEFT:
+                do {
+                    count += colorIncrement
+                    movePositions.push([(curPosition[0] - count), (curPosition[1] + count)])
+                } while (Math.abs(count) < move.spaces)
+                break
+            case Direction.BACKWARD_RIGHT:
+                do {
+                    count += colorIncrement
+                    movePositions.push([(curPosition[0] - count), (curPosition[1] - count)])
+                } while (Math.abs(count) < move.spaces)
+                break
         }
         if(movePositions.length > 0){
             allMovePositions.push(movePositions)
@@ -99,7 +134,7 @@ function tryMove(board, curPosition, newPosition){
     }
 
     let allMovePositions = getPieceMoves(possibleMoves, curPosition, piece.color)
-    console.log("allMovePositions=" + allMovePositions)
+    // console.log("allMovePositions=" + allMovePositions)
     for(let movePositions of allMovePositions){
         if(movePositions.some(movePosition => newPosition.toString() === movePosition.toString())){
             // TODO need to account for pieces in the way
@@ -114,22 +149,38 @@ function tryMove(board, curPosition, newPosition){
 // Main
 initBoard()
 
-// black
-board = tryMove(board, [6,4], [5,4])
+// white queen smoke test
+board = tryMove(board, [0,4], [3,1])
 printBoard(board)
-board = tryMove(board, [5,4], [4,4])
+board = tryMove(board, [3,1], [2,0])
 printBoard(board)
-board = tryMove(board, [4,4], [3,4])
+board = tryMove(board, [2,0], [3,1])
 printBoard(board)
-board = tryMove(board, [3,4], [2,4])
+board = tryMove(board, [3,1], [2,2])
 printBoard(board)
-board = tryMove(board, [2,4], [1,4]) // Enemy piece in the way, wont move
+board = tryMove(board, [2,2], [3,2])
 printBoard(board)
-board = tryMove(board, [7,4], [3,4]) // bQueen to behind now moved bPawn
+board = tryMove(board, [3,2], [2,2])
 printBoard(board)
-board = tryMove(board, [6,3], [3,3]) // too many spaces for pawn to move
+board = tryMove(board, [2,2], [2,1])
+printBoard(board)
+board = tryMove(board, [2,1], [2,3])
 printBoard(board)
 
-// white
-board = tryMove(board, [1,1], [2,1])
+// black queen smoke test
+board = tryMove(board, [7,4], [4,1])
+printBoard(board)
+board = tryMove(board, [4,1], [5,0])
+printBoard(board)
+board = tryMove(board, [5,0], [4,1])
+printBoard(board)
+board = tryMove(board, [4,1], [5,2])
+printBoard(board)
+board = tryMove(board, [5,2], [4,2])
+printBoard(board)
+board = tryMove(board, [4,2], [5,2])
+printBoard(board)
+board = tryMove(board, [5,2], [5,1])
+printBoard(board)
+board = tryMove(board, [5,1], [5,3])
 printBoard(board)
