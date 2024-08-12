@@ -55,15 +55,18 @@ function initBoard(){
     printBoard(board)
 }
 
-function getPieceMoves(possibleMoves, curPosition){
+function getPieceMoves(possibleMoves, curPosition, color){
     let allMovePositions = []
+    let colorIncrement = color === Color.WHITE ? 1 : -1
     for(let move of possibleMoves){
         let movePositions = []
         switch(move.direction){
             case Direction.FORWARD:
-                for(let i=0; i < move.spaces; i++){
-                    movePositions.push([(curPosition[0] - 1) - i, curPosition[1]])
-                }
+                let count = 0
+                do {
+                    count += colorIncrement
+                    movePositions.push([(curPosition[0] + count), curPosition[1]])
+                } while(Math.abs(count) < move.spaces)
         }
         if(movePositions.length > 0){
             allMovePositions.push(movePositions)
@@ -72,7 +75,6 @@ function getPieceMoves(possibleMoves, curPosition){
     return allMovePositions
 }
 
-// Try to move black pawn at board[6][0] forward
 function tryMove(board, curPosition, newPosition){
     // curPosition[0] is row
     // curPosition[1] is col
@@ -89,7 +91,7 @@ function tryMove(board, curPosition, newPosition){
         possibleMoves = piece.possibleAttacks
     }
 
-    let allMovePositions = getPieceMoves(possibleMoves, curPosition)
+    let allMovePositions = getPieceMoves(possibleMoves, curPosition, piece.color)
     console.log("allMovePositions=" + allMovePositions)
     for(let movePositions of allMovePositions){
         if(movePositions.some(movePosition => newPosition.toString() === movePosition.toString())){
@@ -105,6 +107,7 @@ function tryMove(board, curPosition, newPosition){
 // Main
 initBoard()
 
+// black
 board = tryMove(board, [6,4], [5,4])
 printBoard(board)
 board = tryMove(board, [5,4], [4,4])
@@ -118,4 +121,8 @@ printBoard(board)
 board = tryMove(board, [7,4], [3,4]) // bQueen to behind now moved bPawn
 printBoard(board)
 board = tryMove(board, [6,3], [3,3]) // too many spaces for pawn to move
+printBoard(board)
+
+// white
+board = tryMove(board, [1,1], [2,1])
 printBoard(board)
