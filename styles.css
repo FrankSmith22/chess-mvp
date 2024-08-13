@@ -1,0 +1,10 @@
+.row{
+    font-size: 0;
+}
+.col{
+    margin: 0;
+    height: 45px;
+    width: 45px;
+    background-color: tan;
+    display: inline-block;
+}
