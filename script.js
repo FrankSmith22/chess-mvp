@@ -236,13 +236,15 @@ function tryMove(board, curPosition, newPosition){
     }
 
     let allMovePositions = getPieceMoves(board, possibleMoves, curPosition, piece.color, attacking)
-    // console.log("allMovePositions=" + allMovePositions)
+    console.log(piece.constructor.name)
     for(let movePositions of allMovePositions){
         if(movePositions.some(movePosition => newPosition.toString() === movePosition.toString())){
-            // TODO need to account for pieces in the way
             console.log("Piece can move/attack")
             board[newPosition[0]][newPosition[1]] = piece
             board[curPosition[0]][curPosition[1]] = "X"
+            if(piece.constructor.name === 'Pawn'){
+                piece.possibleMoves[0].spaces = 1
+            }
         }
     }
     return board

@@ -32,7 +32,7 @@ export class Pawn extends Piece{
     constructor(color){
         super(color)
         this.possibleMoves = [
-            {"direction": Direction.FORWARD, "spaces": 1}
+            {"direction": Direction.FORWARD, "spaces": 2}
         ]
         this.possibleAttacks = [
             {"direction": Direction.FORWARD_LEFT, "spaces": 1},
