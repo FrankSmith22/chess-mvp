@@ -22,15 +22,25 @@ export const Color = Object.freeze({
     BLACK: "black"
 })
 
+export const PieceType = Object.freeze({
+    PAWN: "pawn",
+    ROOK: "rook",
+    KNIGHT: "knight",
+    BISHOP: "bishop",
+    KING: "king",
+    QUEEN: "queen"
+})
+
 export class Piece{
-    constructor(color){
+    constructor(color, type){
         this.color = color
+        this.type = type
     }
 }
 
 export class Pawn extends Piece{
-    constructor(color){
-        super(color)
+    constructor(color, type){
+        super(color, type)
         this.possibleMoves = [
             {"direction": Direction.FORWARD, "spaces": 2}
         ]
@@ -42,8 +52,8 @@ export class Pawn extends Piece{
 }
 
 export class Rook extends Piece{
-    constructor(color){
-        super(color)
+    constructor(color, type){
+        super(color, type)
         this.possibleMoves = [
             {"direction": Direction.FORWARD, "spaces": 8},
             {"direction": Direction.BACKWARD, "spaces": 8},
@@ -55,8 +65,8 @@ export class Rook extends Piece{
 }
 
 export class Knight extends Piece{
-    constructor(color){
-        super(color)
+    constructor(color, type){
+        super(color, type)
         this.possibleMoves = [
             {"direction": Direction.L_FORWARD_LEFT, "spaces": 1},
             {"direction": Direction.L_FORWARD_RIGHT, "spaces": 1},
@@ -72,8 +82,8 @@ export class Knight extends Piece{
 }
 
 export class Bishop extends Piece{
-    constructor(color){
-        super(color)
+    constructor(color, type){
+        super(color, type)
         this.possibleMoves = [
             {"direction": Direction.FORWARD_LEFT, "spaces": 8},
             {"direction": Direction.FORWARD_RIGHT, "spaces": 8},
@@ -85,8 +95,8 @@ export class Bishop extends Piece{
 }
 
 export class King extends Piece{
-    constructor(color){
-        super(color)
+    constructor(color, type){
+        super(color, type)
         this.possibleMoves = [
             {"direction": Direction.FORWARD, "spaces": 1},
             {"direction": Direction.BACKWARD, "spaces": 1},
@@ -102,8 +112,8 @@ export class King extends Piece{
 }
 
 export class Queen extends Piece{
-    constructor(color){
-        super(color)
+    constructor(color, type){
+        super(color, type)
         this.possibleMoves = [
             {"direction": Direction.FORWARD, "spaces": 8},
             {"direction": Direction.BACKWARD, "spaces": 8},

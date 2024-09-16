@@ -14,7 +14,7 @@ export function printBoard(frozenBoard){
                 printStr += col.padEnd(9, " ")
             }
             else{
-                printStr += col.color[0] + col.constructor.name.padEnd(8, " ")
+                printStr += col.color[0] + col.type.padEnd(8, " ")
             }
         }
         printStr += "\n"
@@ -40,8 +40,7 @@ export function printBoard(frozenBoard){
                 newRow.appendChild(newCol)
                 continue
             }
-            // let imageSrc = `piece_pngs/${col.color}_${col.constructor.name.toLowerCase()}.png`
-            let imageSrc = `piece_pngs/${col.color}_${col.constructor.name.toLowerCase()}.png`
+            let imageSrc = `piece_pngs/${col.color}_${col.type.toLowerCase()}.png`
             let imageElement = document.createElement('img')
             imageElement.src = imageSrc
             newCol.appendChild(imageElement)
