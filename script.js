@@ -162,48 +162,64 @@ function getPieceMoves(board, possibleMoves, curPosition, color, attacking){
             case Direction.L_FORWARD_LEFT:
                 count += (colorIncrement*2)
                 movePosition = [(curPosition[0] + count), (curPosition[1] + colorIncrement)]
+                canMove = checkCollision(board, movePosition, color, attacking)
+                if(!canMove) break
                 if(oobCheck(movePosition)) break
                 movePositions.push(movePosition)
                 break
             case Direction.L_FORWARD_RIGHT:
                 count += (colorIncrement*2)
                 movePosition = [(curPosition[0] + count), (curPosition[1] - colorIncrement)]
+                canMove = checkCollision(board, movePosition, color, attacking)
+                if(!canMove) break
                 if(oobCheck(movePosition)) break
                 movePositions.push(movePosition)
                 break
             case Direction.L_RIGHT_FORWARD:
                 count += (colorIncrement*2)
                 movePosition = [(curPosition[0] + colorIncrement), (curPosition[1] - count)]
+                canMove = checkCollision(board, movePosition, color, attacking)
+                if(!canMove) break
                 if(oobCheck(movePosition)) break
                 movePositions.push(movePosition)
                 break
             case Direction.L_RIGHT_BACKWARD:
                 count += (colorIncrement*2)
                 movePosition = [(curPosition[0] - colorIncrement), (curPosition[1] - count)]
+                canMove = checkCollision(board, movePosition, color, attacking)
+                if(!canMove) break
                 if(oobCheck(movePosition)) break
                 movePositions.push(movePosition)
                 break
             case Direction.L_BACKWARD_RIGHT:
                 count += (colorIncrement*2)
                 movePosition = [(curPosition[0] - count), (curPosition[1] - colorIncrement)]
+                canMove = checkCollision(board, movePosition, color, attacking)
+                if(!canMove) break
                 if(oobCheck(movePosition)) break
                 movePositions.push(movePosition)
                 break
             case Direction.L_BACKWARD_LEFT:
                 count += (colorIncrement*2)
                 movePosition = [(curPosition[0] - count), (curPosition[1] + colorIncrement)]
+                canMove = checkCollision(board, movePosition, color, attacking)
+                if(!canMove) break
                 if(oobCheck(movePosition)) break
                 movePositions.push(movePosition)
                 break
             case Direction.L_LEFT_BACKWARD:
                 count += (colorIncrement*2)
                 movePosition = [(curPosition[0] - colorIncrement), (curPosition[1] + count)]
+                canMove = checkCollision(board, movePosition, color, attacking)
+                if(!canMove) break
                 if(oobCheck(movePosition)) break
                 movePositions.push(movePosition)
                 break
             case Direction.L_LEFT_FORWARD:
                 count += (colorIncrement*2)
                 movePosition = [(curPosition[0] + colorIncrement), (curPosition[1] + count)]
+                canMove = checkCollision(board, movePosition, color, attacking)
+                if(!canMove) break
                 if(oobCheck(movePosition)) break
                 movePositions.push(movePosition)
                 break
