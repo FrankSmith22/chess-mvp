@@ -1,4 +1,4 @@
-import { printBoard } from "./utils.js"
+import { printBoard, updateMessage } from "./utils.js"
 import { Direction, Color, Pawn, Rook, Knight, Bishop, King, Queen } from "./pieces.js"
 
 let selectedPiece = null
@@ -224,12 +224,41 @@ function getPieceMoves(board, possibleMoves, curPosition, color, attacking){
                 movePositions.push(movePosition)
                 break
         }
-        console.log(movePositions)
         if(movePositions.length > 0){
             allMovePositions.push(movePositions)
         }
     }
     return allMovePositions
+}
+
+function checkCheck(board, currentColor){
+    /*
+        For each piece on the board, loop through all possible attack positions (call getPieceMoves with attacking=true)
+        if any moves overlaps with a piece, check if the piece is of the opposite color and a king
+        if the attacking piece is of the same color as the currentColor, then the move is legal, and the opposite color is now in check
+        if the attacking piece is the opposite color, the move is illegal.
+    */
+    for (let rowNum = 0; rowNum < board.length; rowNum++){
+        for (let colNum = 0; colNum < board[rowNum].length; colNum++){
+            let col = board[rowNum][colNum]
+            if (typeof col === 'string') continue
+            let allMovePositions = getPieceMoves(board, col.possibleAttacks, [rowNum,colNum], col.color, true)
+            console.log(col.constructor.name)
+            console.log(allMovePositions)
+            for(let movePositions of allMovePositions){
+                for(let movePosition of movePositions){
+                    let victimCol = board[movePosition[0]][movePosition[1]]
+                    if (typeof victimCol === 'string') continue
+                    if (victimCol.constructor.name === "King" && (victimCol.color !== currentColor)){
+                        console.log('KING IS IN CHECK')
+                        updateMessage(`${victimCol.color} King is in check!`)
+                        return
+                    }
+                }
+            }
+        }
+    }
+    updateMessage('')
 }
 
 function tryMove(board, curPosition, newPosition){
@@ -252,12 +281,14 @@ function tryMove(board, curPosition, newPosition){
     }
 
     let allMovePositions = getPieceMoves(board, possibleMoves, curPosition, piece.color, attacking)
-    console.log(piece.constructor.name)
     for(let movePositions of allMovePositions){
         if(movePositions.some(movePosition => newPosition.toString() === movePosition.toString())){
             console.log("Piece can move/attack")
+            let oldBoard = board
             board[newPosition[0]][newPosition[1]] = piece
             board[curPosition[0]][curPosition[1]] = "X"
+            // TODO Check for check
+            let isCheck = checkCheck(board, piece.color)
             if(piece.constructor.name === 'Pawn'){
                 piece.possibleMoves[0].spaces = 1
             }
