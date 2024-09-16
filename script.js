@@ -1,6 +1,8 @@
 import { printBoard } from "./utils.js"
 import { Direction, Color, Pawn, Rook, Knight, Bishop, King, Queen } from "./pieces.js"
 
+let selectedPiece = null
+
 let board = [ // 8 rows, 8 cols
     ["X","X","X","X","X","X","X","X",],
     ["X","X","X","X","X","X","X","X",],
@@ -72,6 +74,7 @@ function checkCollision(board, movePosition, color, attacking){
     }
     return canMove
 }
+
 
 function getPieceMoves(board, possibleMoves, curPosition, color, attacking){
     let allMovePositions = []
@@ -153,7 +156,7 @@ function getPieceMoves(board, possibleMoves, curPosition, color, attacking){
                     if(!canMove) break
                     movePositions.push(movePosition)
                 } while (Math.abs(count) < move.spaces)
-                    break
+                break
                     
             // Knight moves..
             case Direction.L_FORWARD_LEFT:
@@ -245,74 +248,28 @@ function tryMove(board, curPosition, newPosition){
     return board
 }
 
+export function handleClick(colElement, row, col){
+    console.log(row)
+    console.log(col)
+    if(selectedPiece === null && colElement.children.length === 0){
+        return
+    }
+    if(selectedPiece === null){
+        colElement.style.boxShadow = '0px 0px 20px 15px gold'
+        colElement.style.zIndex = '999'
+        selectedPiece = {
+            'element': colElement,
+            'row': row,
+            'col': col
+        }
+        return
+    }
+    board = tryMove(board, [selectedPiece['row'],selectedPiece['col']], [row,col])
+    printBoard(board)
+    selectedPiece['element'].style.boxShadow = ''
+    selectedPiece['element'].style.zIndex = ''
+    selectedPiece = null
+}
+
 // Main
 initBoard()
-
-// Collision test
-board = tryMove(board, [0,4], [3,4]) // Try to move white queen forward
-printBoard(board)
-board = tryMove(board, [1,4], [2,4]) // Move white pawn forward
-printBoard(board)
-board = tryMove(board, [0,5], [2,3]) // Move white bishop forward and to the left
-printBoard(board)
-board = tryMove(board, [0,4], [1,4]) // Now successfully move white queen forward
-printBoard(board)
-board = tryMove(board, [2,3], [6,7]) // Capture black pawn with white bishop
-printBoard(board)
-board = tryMove(board, [6,7], [1,2]) // Fail to capture own color piece
-printBoard(board)
-
-// white queen smoke test
-// board = tryMove(board, [0,4], [3,1])
-// printBoard(board)
-// board = tryMove(board, [3,1], [2,0])
-// printBoard(board)
-// board = tryMove(board, [2,0], [3,1])
-// printBoard(board)
-// board = tryMove(board, [3,1], [2,2])
-// printBoard(board)
-// board = tryMove(board, [2,2], [3,2])
-// printBoard(board)
-// board = tryMove(board, [3,2], [2,2])
-// printBoard(board)
-// board = tryMove(board, [2,2], [2,1])
-// printBoard(board)
-// board = tryMove(board, [2,1], [2,3])
-// printBoard(board)
-
-// // black queen smoke test
-// board = tryMove(board, [7,4], [4,1])
-// printBoard(board)
-// board = tryMove(board, [4,1], [5,0])
-// printBoard(board)
-// board = tryMove(board, [5,0], [4,1])
-// printBoard(board)
-// board = tryMove(board, [4,1], [5,2])
-// printBoard(board)
-// board = tryMove(board, [5,2], [4,2])
-// printBoard(board)
-// board = tryMove(board, [4,2], [5,2])
-// printBoard(board)
-// board = tryMove(board, [5,2], [5,1])
-// printBoard(board)
-// board = tryMove(board, [5,1], [5,3])
-// printBoard(board)
-
-
-// // black knight smoke test
-// board = tryMove(board, [7,1], [5,0]) // forward left
-// printBoard(board)
-// board = tryMove(board, [5,0], [3,1]) // forward right
-// printBoard(board)
-// board = tryMove(board, [3,1], [2,3]) // right forward
-// printBoard(board)
-// board = tryMove(board, [2,3], [3,5]) // right backward
-// printBoard(board)
-// board = tryMove(board, [3,5], [5,6]) // backward right
-// printBoard(board)
-// board = tryMove(board, [5,6], [7,5]) // backward left
-// printBoard(board)
-// board = tryMove(board, [7,5], [6,3]) // left forward
-// printBoard(board)
-// board = tryMove(board, [6,3], [7,1]) // left backward
-// printBoard(board)

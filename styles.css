@@ -7,4 +7,5 @@
     width: 45px;
     background-color: tan;
     display: inline-block;
+    position: relative;
 }
