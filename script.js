@@ -65,14 +65,21 @@ function oobCheck(movePosition){
 
 function checkCollision(board, movePosition, color, attacking){
     let canMove = false
+    let killedPiece = false
     let isOob = oobCheck(movePosition)
-    if (isOob) return false
+    if (isOob){
+        return [false, false]
+    }
     let desiredSpot = board[movePosition[0]][movePosition[1]]
     if(typeof desiredSpot === 'string' || ((desiredSpot.color !== color) && attacking )){
         console.log("desired spot is empty or has an enemy piece, can move")
         canMove = true
+        if (attacking && typeof desiredSpot !== 'string'){
+            killedPiece = true
+        }
     }
-    return canMove
+    console.log("canMove=" + canMove)
+    return [canMove, killedPiece]
 }
 
 
@@ -83,145 +90,168 @@ function getPieceMoves(board, possibleMoves, curPosition, color, attacking){
         let movePositions = []
         let movePosition = null
         let count = 0
-        let canMove = false
         switch(move.direction){
             case Direction.FORWARD:
                 do {
                     count += colorIncrement
                     movePosition = [(curPosition[0] + count), curPosition[1]]
-                    canMove = checkCollision(board, movePosition, color, attacking)
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
                     if(!canMove) break
                     movePositions.push(movePosition)
+                    if(killedPiece) break
                 } while (Math.abs(count) < move.spaces)
                 break
             case Direction.BACKWARD:
                 do {
                     count += colorIncrement
                     movePosition = [(curPosition[0] - count), curPosition[1]]
-                    canMove = checkCollision(board, movePosition, color, attacking)
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
                     if(!canMove) break
                     movePositions.push(movePosition)
+                    if(killedPiece) break
                 } while (Math.abs(count) < move.spaces)
                 break
             case Direction.LEFT:
                 do {
                     count += colorIncrement
                     movePosition = [curPosition[0], (curPosition[1] + count)]
-                    canMove = checkCollision(board, movePosition, color, attacking)
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
                     if(!canMove) break
                     movePositions.push(movePosition)
+                    if(killedPiece) break
                 } while (Math.abs(count) < move.spaces)
                 break
             case Direction.RIGHT:
                 do {
                     count += colorIncrement
                     movePosition = [curPosition[0], (curPosition[1] - count)]
-                    canMove = checkCollision(board, movePosition, color, attacking)
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
                     if(!canMove) break
                     movePositions.push(movePosition)
+                    if(killedPiece) break
                 } while (Math.abs(count) < move.spaces)
                 break
             case Direction.FORWARD_LEFT:
                 do {
                     count += colorIncrement
                     movePosition = [(curPosition[0] + count), (curPosition[1] + count)]
-                    canMove = checkCollision(board, movePosition, color, attacking)
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
                     if(!canMove) break
                     movePositions.push(movePosition)
+                    if(killedPiece) break
                 } while (Math.abs(count) < move.spaces)
                 break
             case Direction.FORWARD_RIGHT:
                 do {
                     count += colorIncrement
                     movePosition = [(curPosition[0] + count), (curPosition[1] - count)]
-                    canMove = checkCollision(board, movePosition, color, attacking)
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
                     if(!canMove) break
                     movePositions.push(movePosition)
+                    if(killedPiece) break
                 } while (Math.abs(count) < move.spaces)
                 break
             case Direction.BACKWARD_LEFT:
                 do {
                     count += colorIncrement
                     movePosition = [(curPosition[0] - count), (curPosition[1] + count)]
-                    canMove = checkCollision(board, movePosition, color, attacking)
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
                     if(!canMove) break
                     movePositions.push(movePosition)
+                    if(killedPiece) break
                 } while (Math.abs(count) < move.spaces)
                 break
             case Direction.BACKWARD_RIGHT:
                 do {
                     count += colorIncrement
                     movePosition = [(curPosition[0] - count), (curPosition[1] - count)]
-                    canMove = checkCollision(board, movePosition, color, attacking)
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
                     if(!canMove) break
                     movePositions.push(movePosition)
+                    if(killedPiece) break
                 } while (Math.abs(count) < move.spaces)
                 break
                     
             // Knight moves..
             case Direction.L_FORWARD_LEFT:
-                count += (colorIncrement*2)
-                movePosition = [(curPosition[0] + count), (curPosition[1] + colorIncrement)]
-                canMove = checkCollision(board, movePosition, color, attacking)
-                if(!canMove) break
-                if(oobCheck(movePosition)) break
-                movePositions.push(movePosition)
+                do {
+                    count += (colorIncrement*2)
+                    movePosition = [(curPosition[0] + count), (curPosition[1] + colorIncrement)]
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
+                    if(!canMove) break
+                    if(oobCheck(movePosition)) break
+                    movePositions.push(movePosition)
+                } while (Math.abs(count) < move.spaces)
                 break
             case Direction.L_FORWARD_RIGHT:
-                count += (colorIncrement*2)
-                movePosition = [(curPosition[0] + count), (curPosition[1] - colorIncrement)]
-                canMove = checkCollision(board, movePosition, color, attacking)
-                if(!canMove) break
-                if(oobCheck(movePosition)) break
-                movePositions.push(movePosition)
+                do {
+                    count += (colorIncrement*2)
+                    movePosition = [(curPosition[0] + count), (curPosition[1] - colorIncrement)]
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
+                    if(!canMove) break
+                    if(oobCheck(movePosition)) break
+                    movePositions.push(movePosition)
+                } while (Math.abs(count) < move.spaces)
                 break
             case Direction.L_RIGHT_FORWARD:
-                count += (colorIncrement*2)
-                movePosition = [(curPosition[0] + colorIncrement), (curPosition[1] - count)]
-                canMove = checkCollision(board, movePosition, color, attacking)
-                if(!canMove) break
-                if(oobCheck(movePosition)) break
-                movePositions.push(movePosition)
+                do {
+                    count += (colorIncrement*2)
+                    movePosition = [(curPosition[0] + colorIncrement), (curPosition[1] - count)]
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
+                    if(!canMove) break
+                    if(oobCheck(movePosition)) break
+                    movePositions.push(movePosition)
+                } while (Math.abs(count) < move.spaces)
                 break
             case Direction.L_RIGHT_BACKWARD:
-                count += (colorIncrement*2)
-                movePosition = [(curPosition[0] - colorIncrement), (curPosition[1] - count)]
-                canMove = checkCollision(board, movePosition, color, attacking)
-                if(!canMove) break
-                if(oobCheck(movePosition)) break
-                movePositions.push(movePosition)
+                do {
+                    count += (colorIncrement*2)
+                    movePosition = [(curPosition[0] - colorIncrement), (curPosition[1] - count)]
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
+                    if(!canMove) break
+                    if(oobCheck(movePosition)) break
+                    movePositions.push(movePosition)
+                } while (Math.abs(count) < move.spaces)
                 break
             case Direction.L_BACKWARD_RIGHT:
-                count += (colorIncrement*2)
-                movePosition = [(curPosition[0] - count), (curPosition[1] - colorIncrement)]
-                canMove = checkCollision(board, movePosition, color, attacking)
-                if(!canMove) break
-                if(oobCheck(movePosition)) break
-                movePositions.push(movePosition)
+                do{
+                    count += (colorIncrement*2)
+                    movePosition = [(curPosition[0] - count), (curPosition[1] - colorIncrement)]
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
+                    if(!canMove) break
+                    if(oobCheck(movePosition)) break
+                    movePositions.push(movePosition)
+                } while (Math.abs(count) < move.spaces)
                 break
             case Direction.L_BACKWARD_LEFT:
-                count += (colorIncrement*2)
-                movePosition = [(curPosition[0] - count), (curPosition[1] + colorIncrement)]
-                canMove = checkCollision(board, movePosition, color, attacking)
-                if(!canMove) break
-                if(oobCheck(movePosition)) break
-                movePositions.push(movePosition)
+                do {
+                    count += (colorIncrement*2)
+                    movePosition = [(curPosition[0] - count), (curPosition[1] + colorIncrement)]
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
+                    if(!canMove) break
+                    if(oobCheck(movePosition)) break
+                    movePositions.push(movePosition)
+                } while (Math.abs(count) < move.spaces)
                 break
             case Direction.L_LEFT_BACKWARD:
-                count += (colorIncrement*2)
-                movePosition = [(curPosition[0] - colorIncrement), (curPosition[1] + count)]
-                canMove = checkCollision(board, movePosition, color, attacking)
-                if(!canMove) break
-                if(oobCheck(movePosition)) break
-                movePositions.push(movePosition)
+                do {
+                    count += (colorIncrement*2)
+                    movePosition = [(curPosition[0] - colorIncrement), (curPosition[1] + count)]
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
+                    if(!canMove) break
+                    if(oobCheck(movePosition)) break
+                    movePositions.push(movePosition)
+                } while (Math.abs(count) < move.spaces)
                 break
             case Direction.L_LEFT_FORWARD:
-                count += (colorIncrement*2)
-                movePosition = [(curPosition[0] + colorIncrement), (curPosition[1] + count)]
-                canMove = checkCollision(board, movePosition, color, attacking)
-                if(!canMove) break
-                if(oobCheck(movePosition)) break
-                movePositions.push(movePosition)
+                do {
+                    count += (colorIncrement*2)
+                    movePosition = [(curPosition[0] + colorIncrement), (curPosition[1] + count)]
+                    let [canMove, killedPiece] = checkCollision(board, movePosition, color, attacking)
+                    if(!canMove) break
+                    if(oobCheck(movePosition)) break
+                    movePositions.push(movePosition)
+                } while (Math.abs(count) < move.spaces)
                 break
         }
         if(movePositions.length > 0){
