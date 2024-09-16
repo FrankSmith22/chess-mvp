@@ -261,7 +261,7 @@ function getPieceMoves(board, possibleMoves, curPosition, color, attacking){
     return allMovePositions
 }
 
-function checkCheck(board, currentColor){
+function checkCheck(board){
     /*
         For each piece on the board, loop through all possible attack positions (call getPieceMoves with attacking=true)
         if any moves overlaps with a piece, check if the piece is of the opposite color and a king
@@ -279,7 +279,7 @@ function checkCheck(board, currentColor){
                 for(let movePosition of movePositions){
                     let victimCol = board[movePosition[0]][movePosition[1]]
                     if (typeof victimCol === 'string') continue
-                    if (victimCol.constructor.name === "King" && (victimCol.color !== currentColor)){
+                    if (victimCol.constructor.name === "King" && (victimCol.color !== col.color)){
                         console.log('KING IS IN CHECK')
                         updateMessage(`${victimCol.color} King is in check!`)
                         return
@@ -318,7 +318,7 @@ function tryMove(board, curPosition, newPosition){
             board[newPosition[0]][newPosition[1]] = piece
             board[curPosition[0]][curPosition[1]] = "X"
             // TODO Check for check
-            let isCheck = checkCheck(board, piece.color)
+            let isCheck = checkCheck(board)
             if(piece.constructor.name === 'Pawn'){
                 piece.possibleMoves[0].spaces = 1
             }
